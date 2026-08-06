@@ -148,6 +148,11 @@ CURATED = {
 # NOT curated: 366797761556 - its Supabase Title is empty, nothing to
 # categorize until a title fetch succeeds.
 
+# SKUs whose curated value must overwrite whatever Category is currently in
+# the row, regardless of Sync Status. ONLY for repairing a wrong category
+# that AUTOMATION itself wrote - never list a SKU here to override a human.
+FORCE_RECATEGORIZE = set()
+
 
 def main():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -168,9 +173,18 @@ def main():
     updates, applied = [], []
     for idx, row in enumerate(data, start=2):
         sku = str(row.get("SKU") or "").strip()
-        if sku in CURATED and "no matching OnBuy category" in str(row.get("Sync Status") or ""):
+        if sku not in CURATED:
+            continue
+        refused = "no matching OnBuy category" in str(row.get("Sync Status") or "")
+        # A mapped SKU whose Category cell is empty is fillable regardless
+        # of what Sync Status says - a later run may have overwritten the
+        # refusal text, and writing into a blank cell can't clobber a
+        # human's choice.
+        blank = not str(row.get("Category") or "").strip()
+        force = sku in FORCE_RECATEGORIZE and str(row.get("Category") or "").strip() != CURATED[sku]
+        if refused or blank or force:
             path = CURATED[sku]
-            applied.append((idx, sku, path))
+            applied.append((idx, sku, path + (" [FORCED]" if force and not (refused or blank) else "")))
             updates.append({"range": f"{col_letter(col_map['Category'])}{idx}", "values": [[path]]})
             updates.append({"range": f"{col_letter(col_map['Sync Status'])}{idx}", "values": [[""]]})
     for idx, sku, path in applied:
