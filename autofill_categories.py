@@ -18,6 +18,57 @@ SHEET_NAME = "OpenMaal_Full_Feed_Master"
 DRY_RUN = (os.getenv("DRY_RUN") or "1").strip().lower() not in ("0", "no", "false", "")
 
 CURATED = {
+    # 2026-08-06 batch - refusals from the overnight runs (31023834413/
+    # 31045685093/31058858262), diagnosed with diagnose_categories.py: no
+    # eBay Type set, no leaf named in any title. Monitors (MSI CMS, Acer
+    # UM.*, LG, Samsung, HyperX, Lenovo TDS):
+    "105168124275": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "121439004145": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "151009206921": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "152119441691": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "328965507410": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "915496878289": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "932737991316": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "308955325422": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "370709123219": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "692692350633": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "973255148974": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "196162335590": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "203837707009": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "435618291906": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "651034548862": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "700683502241": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    "748806174456": "Electronics & Technology > Computing & Gaming > Computer Monitors & Monitor Accessories > Computer Monitors",
+    # TVs (Sharp, Veltech):
+    "135062856071": "Electronics & Technology > TV & Audio > TVs & Accessories > TVs",
+    "177372271151": "Electronics & Technology > TV & Audio > TVs & Accessories > TVs",
+    "273828555582": "Electronics & Technology > TV & Audio > TVs & Accessories > TVs",
+    "349690741351": "Electronics & Technology > TV & Audio > TVs & Accessories > TVs",
+    "693950581998": "Electronics & Technology > TV & Audio > TVs & Accessories > TVs",
+    # HP All-in-One desktop:
+    "300098014096": "Electronics & Technology > Computing & Gaming > Desktop Computers > All-in-one PCs",
+    # Braun Series 5 foil shaver:
+    "301853382795": "Health & Beauty > Shaving & Hair Removal > Electric Shavers > Foil Shavers",
+    # Siemens built-in warming drawer (closest leaf):
+    "317337370134": "Home & Garden > Kitchen & Home Appliances > Cooking Appliances > Ovens",
+    # Acer Chromebook:
+    "326705898729": "Electronics & Technology > Computing & Gaming > Laptops, MacBooks & Accessories > Laptops",
+    # Remington multi groomers:
+    "388862133853": "Health & Beauty > Shaving & Hair Removal > Electric Shavers > Hair Trimmers",
+    "636841364720": "Health & Beauty > Shaving & Hair Removal > Electric Shavers > Hair Trimmers",
+    # Brother laser printer:
+    "401214645504": "Electronics & Technology > Computing & Gaming > Printers & Accessories > Printers",
+    # Babyliss / Tresemme curling tongs:
+    "428692372975": "Health & Beauty > Hair Care > Hair Styling Tools > Hair Curlers",
+    "604912175889": "Health & Beauty > Hair Care > Hair Styling Tools > Hair Curlers",
+    # Xbox Onimusha game:
+    "432460235898": "Electronics & Technology > Computing & Gaming > Video Games, Consoles & Accessories > Video Games",
+    # Breville iron:
+    "847873176179": "Home & Garden > Kitchen & Home Appliances > Irons & Garment Steamers > Irons",
+    # Lay-Z-Spa inflatable hot tub:
+    "896518876882": "Home & Garden > Swimming Pools & Hot Tubs > Hot Tubs & Accessories > In-Ground & Inflatable Hot Tubs",
+    # RingConn smart ring (an activity tracker):
+    "110065267390": "Sports & Outdoors > Exercise & Fitness > Sports Technology > Sports Activity Trackers",
     # 2026-08-05 batch - the 48 SKUs refusing across runs 30932938530/
     # 30957208320/30987744041, diagnosed with diagnose_categories.py: none
     # of these listings set eBay's Type item-specific and no title names a
