@@ -9,6 +9,9 @@ on:
       max_products:
         description: "Cap for this run"
         default: "1000"
+      skip_first:
+        description: "Skip the first N marked rows (staged passes)"
+        default: "0"
 
 # OnBuy-touching: queue behind the scheduled sync, never overlap.
 concurrency:
@@ -45,4 +48,5 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DRY_RUN: ${{ inputs.dry_run == 'no' && '0' || '1' }}
           MAX_PRODUCTS: ${{ inputs.max_products }}
+          SKIP_FIRST: ${{ inputs.skip_first }}
         run: python repair_descriptions.py
