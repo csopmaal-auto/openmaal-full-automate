@@ -6,6 +6,10 @@ on:
       skus:
         description: "Comma-separated SKUs whose creation OnBuy confirmed as FAILED"
         required: true
+      failed_text:
+        description: "Status text to write (default: category-corrected resubmit text)"
+        required: false
+        default: ""
       dry_run:
         description: "yes = list; no = flip Sync Status"
         required: false
@@ -26,5 +30,6 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           SKUS: ${{ inputs.skus }}
+          FAILED_TEXT: ${{ inputs.failed_text }}
           DRY_RUN: ${{ inputs.dry_run == 'no' && '0' || '1' }}
         run: python mark_failed_resubmit.py
