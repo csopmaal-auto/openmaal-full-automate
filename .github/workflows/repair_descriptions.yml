@@ -18,6 +18,10 @@ concurrency:
   group: onbuy-api
   cancel-in-progress: false
 
+      use_listings_opc:
+        description: "yes = take SKU->OPC from the live listings API"
+        default: "no"
+
 jobs:
   repair:
     runs-on: ubuntu-latest
@@ -49,4 +53,5 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run == 'no' && '0' || '1' }}
           MAX_PRODUCTS: ${{ inputs.max_products }}
           SKIP_FIRST: ${{ inputs.skip_first }}
+          USE_LISTINGS_OPC: ${{ inputs.use_listings_opc == 'yes' && '1' || '0' }}
         run: python repair_descriptions.py
