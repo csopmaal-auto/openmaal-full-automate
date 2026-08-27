@@ -12,15 +12,14 @@ on:
       skip_first:
         description: "Skip the first N marked rows (staged passes)"
         default: "0"
+      use_listings_opc:
+        description: "yes = take SKU->OPC from the live listings API"
+        default: "no"
 
 # OnBuy-touching: queue behind the scheduled sync, never overlap.
 concurrency:
   group: onbuy-api
   cancel-in-progress: false
-
-      use_listings_opc:
-        description: "yes = take SKU->OPC from the live listings API"
-        default: "no"
 
 jobs:
   repair:
