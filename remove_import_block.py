@@ -21,6 +21,9 @@ from retry_utils import with_retry
 DRY_RUN = (os.getenv("DRY_RUN") or "1").strip().lower() not in ("0", "no", "false", "")
 SHEET_NAME = os.getenv("SHEET_NAME") or "OpenMaal_Full_Feed_Master"
 BLOCK_START = int(os.environ["BLOCK_START"])
+# "1" = also delete block rows whose Sync Status is not "Synced" (still
+# reported). Position (>= BLOCK_START) + no URL + no cost stays required.
+LIFT_STATUS_GUARD = (os.getenv("LIFT_STATUS_GUARD") or "").strip() == "1"
 
 
 def main():
@@ -47,7 +50,8 @@ def main():
             continue
         if str(r.get("Sync Status") or "").strip() != "Synced":
             kept_status.append((rownum, sku, str(r.get("Sync Status") or "").strip()[:30]))
-            continue
+            if not LIFT_STATUS_GUARD:
+                continue
         to_delete.append(rownum)
     for rn, sku in kept_cost:
         print(f"  KEEP row {rn} SKU {sku} - team filled Cost Price")

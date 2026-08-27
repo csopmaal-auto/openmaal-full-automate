@@ -10,6 +10,10 @@ on:
         description: "yes = list; no = delete the remaining imported rows"
         required: false
         default: "yes"
+      lift_status_guard:
+        description: "1 = also delete block rows whose status is not Synced"
+        required: false
+        default: ""
 
 jobs:
   remove:
@@ -26,5 +30,6 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           BLOCK_START: ${{ inputs.block_start }}
+          LIFT_STATUS_GUARD: ${{ inputs.lift_status_guard }}
           DRY_RUN: ${{ inputs.dry_run == 'no' && '0' || '1' }}
         run: python remove_import_block.py
