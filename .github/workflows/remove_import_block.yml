@@ -14,6 +14,20 @@ on:
         description: "1 = also delete block rows whose status is not Synced"
         required: false
         default: ""
+      delete_adopted:
+        description: "1 = also delete team-adopted block rows (URL/cost filled) + purge their Supabase mirror rows"
+        required: false
+        default: ""
+      block_end:
+        description: "Optional inclusive last row of the block (fences off newer team rows below it)"
+        required: false
+        default: ""
+
+# Mutates sheet row numbers - must never overlap a sync/backfill/buybox run
+# mid-flight (their row writes would land on shifted rows).
+concurrency:
+  group: onbuy-api
+  cancel-in-progress: false
 
 jobs:
   remove:
@@ -31,5 +45,9 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           BLOCK_START: ${{ inputs.block_start }}
           LIFT_STATUS_GUARD: ${{ inputs.lift_status_guard }}
+          DELETE_ADOPTED: ${{ inputs.delete_adopted }}
+          BLOCK_END: ${{ inputs.block_end }}
           DRY_RUN: ${{ inputs.dry_run == 'no' && '0' || '1' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: python remove_import_block.py
