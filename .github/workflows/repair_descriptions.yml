@@ -12,6 +12,10 @@ on:
       skip_first:
         description: "Skip the first N marked rows (staged passes)"
         default: "0"
+      select_marked:
+        description: "yes = only rows with visible template junk; no = every row with an OPC"
+        required: false
+        default: "yes"
       use_listings_opc:
         description: "yes = take SKU->OPC from the live listings API"
         default: "no"
@@ -57,4 +61,5 @@ jobs:
           LIMIT_SKUS: ${{ inputs.limit_skus }}
           SKIP_FIRST: ${{ inputs.skip_first }}
           USE_LISTINGS_OPC: ${{ inputs.use_listings_opc == 'yes' && '1' || '0' }}
+          SELECT_MARKED: ${{ inputs.select_marked == 'no' && '0' || '1' }}
         run: python repair_descriptions.py
