@@ -1,0 +1,4 @@
+# SKUs that must never be removed by the duplicate clean-up of 2026-10-05: they have an OnBuy order awaiting dispatch.
+316055530172
+4711081845973
+141841149661
