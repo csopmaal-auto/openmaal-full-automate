@@ -106,7 +106,7 @@ jobs:
         if: ${{ !cancelled() && vars.PURGE_DEAD_ROWS != '0' }}
         continue-on-error: true
         env:
-          DRY_RUN: ${{ vars.PURGE_DRY_RUN || '1' }}
+          DRY_RUN: ${{ vars.PURGE_DRY_RUN || '0' }}
           MAX_ROWS: ${{ vars.PURGE_MAX_ROWS || '200' }}
           MAX_EBAY_CHECKS: ${{ vars.PURGE_MAX_EBAY_CHECKS || '250' }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
