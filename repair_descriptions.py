@@ -30,8 +30,6 @@ TABLE = "OpenMaal_Full_Feed_Master"
 
 DRY_RUN = (os.getenv("DRY_RUN") or "1").strip().lower() not in ("0", "no", "false", "")
 MAX_PRODUCTS = int(os.getenv("MAX_PRODUCTS") or "1000")
-# Staged sweeps: sources keep their template junk at eBay, so the marked
-# set is stable across runs - SKIP_FIRST pages through it (pass 2 = 1000).
 SKIP_FIRST = int(os.getenv("SKIP_FIRST") or "0")
 CHUNK = int(os.getenv("CHUNK") or "50")
 
@@ -83,7 +81,7 @@ def listings_opc_map(onbuy):
             opc = str(it.get("opc") or "").strip()
             if sku and opc and sku not in out:
                 out[sku] = opc
-        if len(items) < limit:
+        if len(items) < limit and not onbuy.more_listings(offset, limit):
             break
         offset += limit
         time.sleep(0.3)
