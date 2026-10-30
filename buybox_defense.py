@@ -316,11 +316,17 @@ def main():
     if pushers and not DRY_RUN:
         for c0 in range(0, len(pushers), 500):
             chunk = pushers[c0:c0 + 500]
-            try:
-                results = onbuy.update_listings_by_sku_batch(chunk)
-            except RateLimitError:
-                print(f"burst limit at {c0} - waiting 90s")
-                time.sleep(90)
+            # 2026-10-29 run 40861035005: OnBuy answered 429 twice in a row (no Retry-After), the single 90s retry raised and the
+            # whole run died with the prices unpushed. Escalating waits like the repair tool's page retry; only a fourth 429 kills it.
+            results = None
+            for wait in (90, 120, 180):
+                try:
+                    results = onbuy.update_listings_by_sku_batch(chunk)
+                    break
+                except RateLimitError:
+                    print(f"burst limit at {c0} - waiting {wait}s")
+                    time.sleep(wait)
+            if results is None:
                 results = onbuy.update_listings_by_sku_batch(chunk)
             errs = {str((it or {}).get("sku") or "").strip(): str((it or {}).get("error") or "").strip()
                     for it in results}
